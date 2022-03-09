@@ -204,7 +204,19 @@ div.imagedesc{
 
  
 <div class="remark">
-Copy here the EXACT text fiven by the customer.
+Si desidera costruire un’applicazione software capace di:
+
+<ul class="simple" id="radargui">
+<li><p>(requisito <span class="blue">radarGui</span>) mostrare le distanze rilevate da un sensore Sonar``HC-SR04`` connesso a un RaspberryPi
+su un display (<code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) a forma di radar connesso a un PC.</p></li>
+</ul>
+
+<img alt="img/radarDisplay.png" class="align-center" src="img/radarDisplay.png" style="width: 20%;">
+
+<ul class="simple" id="ledalarm">
+<li><p>(requisito <span class="blue">ledAlarm</span>) accendere un Led se la distanza rilevata dal Sonar è inferiore a un valore limite prefissato
+denominato <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code>.</p></li>
+</ul>
 </div>
 
  
@@ -215,7 +227,10 @@ Copy here the EXACT text fiven by the customer.
 </div>
 
 <h2>Problem analysis</h2>
- 
+
+<p>L'architettura logica suggerita dal problema è rappresentabile con la figura che segue:</p>
+<img alt="img/ArchLogicaOOP.PNG" class="align-center" src="img/ArchLogicaOOP.PNG" style="width: 50%;">
+
 
 <h2>Test plans</h2> 
 
