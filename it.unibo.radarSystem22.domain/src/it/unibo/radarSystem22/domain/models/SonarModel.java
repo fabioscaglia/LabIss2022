@@ -1,0 +1,85 @@
+package it.unibo.radarSystem22.domain.models;
+
+import it.unibo.radarSystem22.domain.Distance;
+import it.unibo.radarSystem22.domain.interfaces.IDistance;
+import it.unibo.radarSystem22.domain.interfaces.ISonar;
+import it.unibo.radarSystem22.domain.mock.SonarMock;
+import it.unibo.radarSystem22.domain.utils.ColorsOut;
+import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
+import it.unibo.radarSystem22.domanin.concrete.SonarConcrete;
+
+public abstract class SonarModel implements ISonar {
+
+	protected  IDistance curVal = new Distance(90);	 
+	protected boolean stopped   = true;
+	 	
+	//Metodi factory
+	public static ISonar create() 
+	{
+		if( DomainSystemConfig.simulation )  return createSonarMock();
+		else  return createSonarConcrete();		
+	}
+
+	public static ISonar createSonarMock() 
+	{
+		ColorsOut.out("createSonarMock", ColorsOut.BLUE);
+		return new SonarMock();
+	}
+	
+	public static ISonar createSonarConcrete() 
+	{
+		ColorsOut.out("createSonarConcrete", ColorsOut.BLUE);
+		return new SonarConcrete();
+	}	
+	
+	protected SonarModel() 
+	{
+		//Costruttore nascosto per forzare il setup
+		ColorsOut.out("SonarModel | calling (specialized) sonarSetUp ", ColorsOut.BLUE );
+		sonarSetUp();   
+	}
+	
+	protected void updateDistance( int d ) {
+		curVal = new Distance( d );
+		ColorsOut.out("SonarModel | updateDistance "+ d, ColorsOut.BLUE);
+	}	
+	
+	//Metodi astratti che sono specializzati da SonarMock e SonarConcrete
+	protected abstract void sonarSetUp() ;
+ 	protected abstract void sonarProduce() ;
+
+	@Override
+	public boolean isActive() {
+		//ColorsOut.out("SonarModel | isActive "+ (! stopped), ColorsOut.GREEN);
+		return ! stopped;
+	}
+	
+	@Override
+	public IDistance getDistance() {
+		return curVal;
+	}
+	
+	@Override
+	public void activate() {
+		curVal = new Distance( 90 );
+ 		ColorsOut.out("SonarModel | activate" );
+		stopped = false;
+		new Thread() {
+			public void run() {
+				while( ! stopped  ) {
+					//Colors.out("SonarModel | call produce", Colors.GREEN);
+					sonarProduce(  );
+					//Utils.delay(RadarSystemConfig.sonarDelay);
+				}
+				ColorsOut.out("SonarModel | ENDS" );
+		    }
+		}.start();
+	}
+ 	
+	@Override
+	public void deactivate() {
+		ColorsOut.out("SonarModel | deactivate", ColorsOut.BgYellow );
+		stopped = true;
+	}
+	
+}
