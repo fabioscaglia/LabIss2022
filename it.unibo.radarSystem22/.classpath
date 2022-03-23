@@ -24,6 +24,11 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/fabio/Desktop/Universita/Magistrale/IngegneriaSistemiSoftware/lab/issLab2022/unibolibs/it.unibo.comm2022-1.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/fabio/Desktop/Universita/Magistrale/IngegneriaSistemiSoftware/lab/issLab2022/unibolibs/2p301.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
