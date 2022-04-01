@@ -2,23 +2,15 @@ package it.unibo.radarSystem22.domain;
 
 import it.unibo.radarSystem22.domain.interfaces.IDistance;
 
-public class Distance implements IDistance {
-
-	private int val;
-	
-	public Distance(int val)
-	{
-		this.val=val;
-	}
-	
+public class Distance implements IDistance{
+ private int v;
+	    public Distance(int d) { v=d;	}
+	    public Distance(String d) { v=Integer.parseInt(d);	}
+	    @Override
+	    public int getVal() { return v; }
+	    
 	@Override
-	public int getVal() {
-		return this.val;
-	}
-
-	@Override
-	public String toString()
-	{
-		return ""+this.val;
+	public String toString() {
+		return ""+v;
 	}
 }

@@ -9,8 +9,7 @@ import it.unibo.radarSystem22.domain.utils.ColorsOut;
 import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 
 public class SonarMock extends SonarModel implements ISonar{
-	
-	private int delta = 1;
+private int delta = 1;
 	@Override
 	protected void sonarSetUp() {
 		curVal = new Distance(90);		
@@ -22,20 +21,14 @@ public class SonarMock extends SonarModel implements ISonar{
 		return curVal;
 	}	
 	@Override
-	protected void sonarProduce( ) 
-	{
-		if( DomainSystemConfig.testing ) 
-		{	
-			//Produce lo stesso valore come un ostacolo a distanza fissa
+	protected void sonarProduce( ) {
+		if( DomainSystemConfig.testing ) {	//produces always the same value
 			updateDistance( DomainSystemConfig.testingDistance );			      
-		}
-		else 
-		{
+		}else {
 			int v = curVal.getVal() - delta;
 			updateDistance( v );			    
 			stopped = ( v <= 0 );
 		}
 		BasicUtils.delay(DomainSystemConfig.sonarDelay);  //avoid fast generation
  	}
-
 }

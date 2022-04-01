@@ -31,6 +31,7 @@ private Socket socket;
 		try {
 			outputChannel.writeBytes( msg+"\n" );
 			outputChannel.flush();
+			//outputChannel.flush();
 			//Colors.out( "TcpConnection | has sent   " + msg, Colors.ANSI_YELLOW );	 
 		} catch (IOException e) {
 			//Colors.outerr( "TcpConnection | sendALine ERROR " + e.getMessage());	 

@@ -1,40 +1,33 @@
 package it.unibo.radarSystem22.domain.models;
-
+ 
 import it.unibo.radarSystem22.domain.Distance;
-import it.unibo.radarSystem22.domain.interfaces.IDistance;
-import it.unibo.radarSystem22.domain.interfaces.ISonar;
+import it.unibo.radarSystem22.domain.concrete.SonarConcrete;
+import it.unibo.radarSystem22.domain.interfaces.*;
 import it.unibo.radarSystem22.domain.mock.SonarMock;
 import it.unibo.radarSystem22.domain.utils.ColorsOut;
 import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
-import it.unibo.radarSystem22.domanin.concrete.SonarConcrete;
 
-public abstract class SonarModel implements ISonar {
 
-	protected  IDistance curVal = new Distance(90);	 
-	protected boolean stopped   = true;
-	 	
-	//Metodi factory
-	public static ISonar create() 
-	{
+
+public abstract class SonarModel  implements ISonar{  
+protected  IDistance curVal = new Distance(90);	 
+protected boolean stopped   = true;
+ 	
+	public static ISonar create() {
 		if( DomainSystemConfig.simulation )  return createSonarMock();
 		else  return createSonarConcrete();		
 	}
 
-	public static ISonar createSonarMock() 
-	{
+	public static ISonar createSonarMock() {
 		ColorsOut.out("createSonarMock", ColorsOut.BLUE);
 		return new SonarMock();
-	}
-	
-	public static ISonar createSonarConcrete() 
-	{
+	}	
+	public static ISonar createSonarConcrete() {
 		ColorsOut.out("createSonarConcrete", ColorsOut.BLUE);
 		return new SonarConcrete();
 	}	
 	
-	protected SonarModel() 
-	{
-		//Costruttore nascosto per forzare il setup
+	protected SonarModel() {//hidden costructor, to force setup
 		ColorsOut.out("SonarModel | calling (specialized) sonarSetUp ", ColorsOut.BLUE );
 		sonarSetUp();   
 	}
@@ -43,8 +36,7 @@ public abstract class SonarModel implements ISonar {
 		curVal = new Distance( d );
 		ColorsOut.out("SonarModel | updateDistance "+ d, ColorsOut.BLUE);
 	}	
-	
-	//Metodi astratti che sono specializzati da SonarMock e SonarConcrete
+
 	protected abstract void sonarSetUp() ;
  	protected abstract void sonarProduce() ;
 
@@ -81,5 +73,8 @@ public abstract class SonarModel implements ISonar {
 		ColorsOut.out("SonarModel | deactivate", ColorsOut.BgYellow );
 		stopped = true;
 	}
-	
+
 }
+
+  
+

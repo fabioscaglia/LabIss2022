@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -38,15 +37,13 @@ public class DomainSystemConfig {
 			if(  fis == null ) {
  				 fis = new FileInputStream(new File(resourceName));
 			}
-			Reader reader = new InputStreamReader(fis);
-	        JSONTokener tokener = new JSONTokener(reader);
+//	        JSONTokener tokener = new JSONTokener(fis);
+			Reader reader       = new InputStreamReader(fis);
+			JSONTokener tokener = new JSONTokener(reader);      
 	        JSONObject object   = new JSONObject(tokener);
 	 		
 	        simulation          = object.getBoolean("simulation");
-	        
-	        
-	        webCam           = object.getBoolean("webCam");
-	        
+	        webCam           = object.getBoolean("webCam");	        
 	        sonarObservable  = object.getBoolean("sonarObservable");	
 	        sonarDelay       = object.getInt("sonarDelay");	
 	        sonarDistanceMax = object.getInt("sonarDistanceMax");	
@@ -58,8 +55,6 @@ public class DomainSystemConfig {
  	        
 		} catch (FileNotFoundException e) {
  			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );
-		} catch (JSONException e) {
-			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );
 		}
 
 	}	

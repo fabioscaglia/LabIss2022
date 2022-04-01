@@ -1,6 +1,7 @@
 package it.unibo.radarSystem22.domain.utils;
-
+ 
 public class BasicUtils {
+ 	
 	public static void showSystemInfo(){
 
 		System.out.println(
@@ -33,4 +34,7 @@ public class BasicUtils {
 		String nThreads = ""+Thread.activeCount() ;
 		ColorsOut.outappl( msg + " curthread=T n=N".replace("T", tname).replace("N", nThreads), ColorsOut.YELLOW );
 	}
+
+ 
+	
 }

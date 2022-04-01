@@ -1,5 +1,7 @@
 package it.unibo.radarSystem22.domain.utils;
 
+//Install ANSI-Escape in Console form EclipseMarket
+//See 
 public class ColorsOut {
 	public static final String ANSI_YELLOW         = "\u001B[33m";
 	public static final String ANSI_PURPLE         = "\u001B[35m";
@@ -57,3 +59,5 @@ public class ColorsOut {
 	}
 
 }
+
+ 
