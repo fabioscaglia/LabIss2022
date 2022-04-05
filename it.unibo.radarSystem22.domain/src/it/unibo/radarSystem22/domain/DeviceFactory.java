@@ -25,7 +25,7 @@ public class DeviceFactory {
 		}
 	}
 	public static ISonar createSonar(boolean observable) {
-		ColorsOut.out("Algise1 | DeviceFactory | createSonar simulated="+DomainSystemConfig.simulation, ColorsOut.GREEN);
+		ColorsOut.out("DeviceFactory | createSonar simulated="+DomainSystemConfig.simulation, ColorsOut.GREEN);
 		if( observable ) return createSonarObservable();
 		else 
 			return createSonar();

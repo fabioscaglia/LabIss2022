@@ -223,18 +223,22 @@ la posizione dell’ostacolo a una nuova distanza <code class="docutils literal no
 <h2>Requirement analysis</h2>
 <p>
 Per inviare informazioni a tutti i componenti software interessati alla rilevazione dei valori di distanza bisogna tenerne traccia in un'apposita struttura.<br/>
-Cosa si intende per modifiche in modo significativo? <br/>
+Cosa si intende per modifiche in modo significativo? Per ipotesi scegliamo un DELTA in modo tale che, se |NEWVAL-OLDVAL|>DELTA, allora consideriamo il cambiamento come significativo <br/>
 Per il testing si possono fare sia test con sonar simulati, sia con sonar concreti<br/>
 <p/>
 </div>
 
 <h2>Problem analysis</h2>
 <p>
-Osservare un sonar significa osservare i valori da lui prodotti. La distanza misurata è una proprietà del sonar, dato che è lui a calcolarla. <br/>
+Osservare un sonar significa osservare i valori da lui prodotti. La distanza misurata non è una proprietà del sonar, è qualcosa che lui calcola. <br/>
+Fino a quando non c'è uno spostamento maggiore o uguale a DELTA, la distanza inviata è sempre la stessa, anche se quella misurata è diversa.<br/>
+La velocità con cui l'ostacolo può spostarsi è ignota, quindi possono esserci inconvenienti se lo spostamento è troppo veloce e il sonar non riesce a percepirlo gradualmente, 
+perchè lavora con una frequenza di aggiornamento troppo bassa<br/>
+Per osservare il valore della distanza rilevata/misurata introduco un'entità DistanceMeasured che cambia nel tempo, è modificata da parte del sonar, è osservabile.<br/>
 <p/>
 Il sonar può essere osservato in due modi :
 <ul class="simple">
-<li>Un primo modo,il sonar va ad avvisare direttamente i suoi osservatori dei cambiamenti </li>
+<li>Un primo modo,il sonar viene interrogato dagli osservatori(funzionamento a polling) </li>
 <li>Un secondo modo gli osservatori si registrano presso il sonar che, a fronte di un cambiamento dello stato, notifica l'avvenimento e coloro che si sono registrati presso di esso percepiranno
 cambiamento. In questo caso l'accoppiamento tra osservatore e osservato è basso</li>
 <p></p>
@@ -268,6 +272,19 @@ Interfaccia implementata dal sonar che si renderà osservabile<br/><br/>
 <p>
 Interfaccia implementata chi vuole ricevere aggiornamenti dal Sonar<br/><br/>
 <img src="./img/IDistanceReceiver.jpg" alt="IDistanceReceiver" width="40%" height="40%"></p>
+
+<p>
+<h4>Update</h4>
+In seguito ad una revisione si aggiornano gli schemi precedenti<br/>
+Diagramma UML per la struttura delle classi e interfacce in gioco<br/>
+<p><img src="./img/umlObserverV2.png" alt="umlObserver2" width="40%" height="40%"></p>
+<p>
+Interfaccia implementata dalla classe che si renderà osservabile<br/><br/>
+<img src="./img/IDistanceObservable.jpg" alt="IDistanceObservable" width="40%" height="40%">
+</p>
+L'interfaccia IDistanceReceiver resta invariata
+</p>
+
 </div>
 
 <h2>Testing</h2> 
