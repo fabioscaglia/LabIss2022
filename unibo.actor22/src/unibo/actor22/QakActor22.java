@@ -18,7 +18,8 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 		super(name, QakContext.Companion.createScope(), false, true, false, 50);
         if( Qak22Context.getActor(name) == null ) {
         	Qak22Context.addActor( this );
-        	ColorsOut.out( getName()  + " | CREATED " , ColorsOut.CYAN);
+        	ColorsOut.out( getName()  + " | CREATED " , ColorsOut.RED);
+        	System.out.println(getName()  + " | CREATED ");
         }
         else ColorsOut.outerr("QakActor22 | WARNING: an actor with name " + name + " already exists");	
 	}
@@ -36,7 +37,7 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 	
 	//Invia la richiesta di elaborazione di un messaggio all'attore
 	protected void queueMsg(IApplMessage msg) {
-		super.autoMsg(msg, mycompletion);
+		sendMsgToMyself( msg );
 	}
 	
 /*
@@ -44,10 +45,10 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
  */
  	protected void sendMsg( IApplMessage msg ){
      	String destActorName=msg.msgReceiver();
-		//ColorsOut.out("Qak22Util | sendAMsg " + msg  , ColorsOut.GREEN);	  
+		//ColorsOut.out("Qak22Util | sendMsg " + msg  , ColorsOut.GREEN);	  
         QakActor22 dest = Qak22Context.getActor(destActorName);  
         if( dest != null ) { //attore locale
-    		ColorsOut.out("QakActor22 | sendAMsg " + msg + " to:" + dest.getName() , ColorsOut.GREEN);
+    		//ColorsOut.outappl("QakActor22 | sendMsg " + msg + " to:" + dest.getName() , ColorsOut.YELLOW);
     		dest.queueMsg(msg);
         }else{  
         	sendMsgToRemoteActor(msg);
@@ -60,7 +61,7 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 		ProxyAsClient pxy    = Qak22Context.getProxy(destActorName);
 		//ColorsOut.out("QakActor22 | sendAMsg " + msg + " using:" + pxy , ColorsOut.GREEN);
 		if( pxy == null ) {
-			ColorsOut.outerr("Perhaps no setActorAsRemote for " + destActorName );
+			ColorsOut.outerr( getName() + " sendMsgToRemoteActor: " + msg  + " Perhaps no setActorAsRemote for " + destActorName );
 			return;
 		}
 		pxy.sendMsgOnConnection( msg.toString() ) ;
@@ -91,10 +92,11 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
         else replyToRemoteCaller(msg,reply);
     }	
 	
-	protected void replyToRemoteCaller(IApplMessage msg, IApplMessage reply) {
-    	QakActor22 ar = Qak22Context.getActor(Qak22Context.actorReplyPrefix+msg.msgSender());  
+	protected void replyToRemoteCaller(IApplMessage request, IApplMessage reply) {
+    	QakActor22 ar = Qak22Context.getActor(Qak22Context.actorReplyPrefix+request.msgSender()+"_"+request.msgNum());  //thanks Filoni
+    	ColorsOut.out( "QakActor22 | replyToRemoteCaller using:" + ar.getName()  , ColorsOut.GREEN);
         if(ar !=null) ar.queueMsg( reply );
-        else ColorsOut.outerr("QakActor22 | WARNING: reply " + msg + " IMPOSSIBLE");		
+        else ColorsOut.outerr("QakActor22 | WARNING: reply " + request + " IMPOSSIBLE");		
 	}
 
 //-------------------------------------------------
@@ -103,31 +105,31 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 	
     protected void emit(IApplMessage msg) {
     	if( msg.isEvent() ) {
-    		ColorsOut.outappl( "QakActor22 | emit=" + msg  , ColorsOut.GREEN);
+    		//ColorsOut.outappl( "QakActor22 | emit=" + msg  , ColorsOut.GREEN);
     		Qak22Util.sendAMsg( msg, EventMsgHandler.myName);
     	}   	
     }
     
-    protected void handleEvent(IApplMessage msg) {
-		try {
-		ColorsOut.outappl( "QakActor22 handleEvent:" + msg, ColorsOut.MAGENTA);
-		if( msg.isDispatch() && msg.msgId().equals(Qak22Context.registerForEvent)) {
-			eventObserverMap.put(msg.msgSender(), msg.msgContent());
-		}else if( msg.isEvent()) {
-			eventObserverMap.forEach(
-					( actorName,  evName) -> {
-						ColorsOut.outappl(actorName + " " + evName, ColorsOut.CYAN); 
-						if( evName.equals(msg.msgId()) ) {
-							sendMsg( msg  );
-						}
-			} ) ;
-		}else {
-			ColorsOut.outerr( "QakActor22 handleEvent: msg unknown");
-		}
-		}catch( Exception e) {
-			ColorsOut.outerr( "QakActor22 handleEvent ERROR:" + e.getMessage());
-		}
-	}    
+//    protected void handleEvent(IApplMessage msg) {
+//		try {
+//		ColorsOut.outappl( "QakActor22 handleEvent:" + msg, ColorsOut.MAGENTA);
+//		if( msg.isDispatch() && msg.msgId().equals(Qak22Context.registerForEvent)) {
+//			eventObserverMap.put(msg.msgSender(), msg.msgContent());
+//		}else if( msg.isEvent()) {
+//			eventObserverMap.forEach(
+//					( actorName,  evName) -> {
+//						ColorsOut.outappl(actorName + " " + evName, ColorsOut.CYAN); 
+//						if( evName.equals(msg.msgId()) ) {
+//							sendMsg( msg  );
+//						}
+//			} ) ;
+//		}else {
+//			ColorsOut.outerr( "QakActor22 handleEvent: msg unknown");
+//		}
+//		}catch( Exception e) {
+//			ColorsOut.outerr( "QakActor22 handleEvent ERROR:" + e.getMessage());
+//		}
+//	}    
 
 	
 }
