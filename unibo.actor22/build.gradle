@@ -71,8 +71,8 @@ eclipse {
 }
 
  
-mainClassName = 'unibo.actor22.main.ControllerDevsLocals' 
-
+//mainClassName = 'unibo.actor22.main.ControllerDevsLocals' 
+mainClassName = 'unibo.actor22.main.MainSelector' 
 jar {
     from sourceSets.main.allSource
     manifest { attributes 'Main-Class': "$mainClassName" }

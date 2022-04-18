@@ -3,6 +3,7 @@ package unibo.actor22.common;
 import it.unibo.kactor.IApplMessage;
 import it.unibo.radarSystem22.domain.DeviceFactory;
 import it.unibo.radarSystem22.domain.interfaces.IRadarDisplay;
+import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 import unibo.actor22.QakActor22;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
@@ -10,17 +11,17 @@ import unibo.actor22comm.utils.CommUtils;
 public class ControllerActor extends QakActor22 {
 
 	private int numIter;
-//	private IRadarDisplay radar;
+	private IRadarDisplay radar;
 	
 	public ControllerActor(String name) {
 		super(name);
-//		this.radar = DeviceFactory.createRadarGui();
+		this.radar = DeviceFactory.createRadarGui();
 		this.numIter=0;
 	}
 
 	@Override
 	protected void handleMsg(IApplMessage msg) {
-		System.out.println("Controller: "+msg.toString());
+//		System.out.println("Controller: "+msg.toString());
 		if( msg.isEvent() )        elabEvent(msg);
 		else if( msg.isDispatch()) elabCmd(msg) ;	
 		else if( msg.isReply() )   elabReply(msg) ;	
@@ -28,11 +29,11 @@ public class ControllerActor extends QakActor22 {
 
 	protected void elabCmd(IApplMessage msg) {
 		String msgCmd = msg.msgContent();
-		System.out.println(getName()  + " | elabCmd=" + msgCmd + " obs=" + RadarSystemConfig.sonarObservable);
+//		System.out.println(getName()  + " | elabCmd=" + msgCmd + " obs=" + RadarSystemConfig.sonarObservable);
 		ColorsOut.outappl( getName()  + " | elabCmd=" + msgCmd + " obs=" + RadarSystemConfig.sonarObservable, ColorsOut.BLUE);
 		if( msgCmd.equals(ApplData.cmdActivate)  ) {
  				sendMsg( ApplData.activateSonar);
- 				System.out.println("CONTROLLER:-> attivo il sonar");
+// 				System.out.println("CONTROLLER:-> attivo il sonar");
 				doControllerWork();
  		}		
 	}
@@ -43,7 +44,7 @@ public class ControllerActor extends QakActor22 {
 		String dStr = msg.msgContent();
 		int d = Integer.parseInt(dStr);
 		//Radar
-//		radar.update(dStr, "60");
+		radar.update(dStr, "60");
 		//LedUse case
 		if( d <  RadarSystemConfig.DLIMIT ) {
 			forward(ApplData.turnOnLed); 
@@ -61,13 +62,14 @@ public class ControllerActor extends QakActor22 {
 		if( msg.isEvent()  ) {  //defensive
 			String dstr = msg.msgContent();
 			int d       = Integer.parseInt(dstr);
-//			radar.update(dstr, "60");
-			if( d <  RadarSystemConfig.DLIMIT ) {
+			radar.update(dstr, "60");
+			if( d <  DomainSystemConfig.DLIMIT ) {
 				forward(ApplData.turnOnLed); 		
 				//forward(ApplData.deactivateSonar);
 			}
 			else {
 				forward(ApplData.turnOffLed); 
+				System.out.println(getName()+" |shutting down led");
 			}
 		}
 	}

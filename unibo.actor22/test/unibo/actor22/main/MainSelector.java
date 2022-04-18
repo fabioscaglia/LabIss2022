@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import unibo.actor22.RSActor22Distrib.ControllerRadarOnPC;
+import unibo.actor22.RSActor22Distrib.LedSonarOnRasp;
 import unibo.actor22comm.interfaces.IApplication;
 import unibo.actor22comm.utils.ColorsOut;
 
@@ -21,8 +23,8 @@ public class MainSelector {
 	public void doChoice() {
 		try {
 			programs.put("1", new ControllerDevsLocals() );				 
-//			programs.put("2", new RadarSysSprint2ControllerOnRaspMain());  	 
-//			programs.put("3", new RadarSysSprint2aDevicesOnRaspMain());  	 
+			programs.put("2", new ControllerRadarOnPC());  	 
+			programs.put("3", new LedSonarOnRasp());  	 
   			String i = "";
 			outMenu();
 			ColorsOut.outappl(">>>   ", ColorsOut.ANSI_PURPLE);
