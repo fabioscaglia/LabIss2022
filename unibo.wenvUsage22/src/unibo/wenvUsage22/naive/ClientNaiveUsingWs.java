@@ -110,9 +110,9 @@ BUSINESS LOGIC
 //    	request( moveForward( 400  ) );
 //     	request( moveBackward( 400 ) );
     	request( ApplData.turnLeft( 800  ) );
-    	Thread.sleep( 500 );
     	request( ApplData.stop( ) );
-//     	request( ApplData.turnRight( 400 ) );
+//    	Thread.sleep( 500 );
+     	request( ApplData.turnRight( 400 ) );
      	
 //     	requestSynch(  moveForward( 400  ) );
 //     	requestSynch(  moveBackward( 400  ) );

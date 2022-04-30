@@ -15,7 +15,6 @@ private ISonar sonar;
 	public SonarActor(String name) {
 		super(name);
 		sonar = DeviceFactory.createSonar();
-		System.out.println("SonarActor: "+sonar.getClass());
 	}
 
 	@Override
@@ -30,7 +29,6 @@ private ISonar sonar;
 	protected void elabCmd(IApplMessage msg) {
 		String msgCmd = msg.msgContent();
 		ColorsOut.outappl( getName()  + " | elabCmd=" + msgCmd, ColorsOut.CYAN); 
-		System.out.println( getName()  + " | elabCmd=" + msgCmd); 
 		switch( msgCmd ) {
 			case "activate"    : sonar.activate();break;
 			case "deactivate"  : sonar.deactivate();break;
@@ -52,7 +50,7 @@ private ISonar sonar;
 			case "getDistance"  :{
 				int d = sonar.getDistance().getVal();
 				IApplMessage reply = MsgUtil.buildReply(getName(), "distance", ""+d, msg.msgSender()); //"distance"
-				ColorsOut.outappl( getName()  + " | sendAnswer reply=" + reply, ColorsOut.CYAN);
+				//ColorsOut.outappl( getName()  + " | sendAnswer reply=" + reply, ColorsOut.CYAN);
 				sendReply( msg,reply );
 				break;
 			}

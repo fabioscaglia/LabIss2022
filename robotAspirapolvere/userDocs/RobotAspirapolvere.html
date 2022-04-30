@@ -215,11 +215,31 @@ Progettazione del robot aspirapolvere
 
 <h2>Requirement analysis</h2>
 <p>
+<ul class="simple">
+<li> La stanza ha pavimento piano ed è delimitata da muri</li>
+<li> Il robot parte dalla HOME, ovvero l'angolo formato dai muri denominati wallUp e wallLeft</li>
+</ul>
 Per coprire tutta la superficie della stanza vuota, si intende che il robot debba passare almeno una volta su tutti i punti di essa<br/>
 Conosco le dimensioni della stanza a priori? NO<br/>
 </p>
 </div>
 
+<h3>Requisiti funzionali</h3>
+<p>
+<ol class="simple">
+<li>Copertura: il robot deve seguire una strategia di movimento che garantisca di esplorare la superficie in modo completo.</li>
+<li>VerificaLavoro: deve essere possibile controllare in modo automatico che la copertura sia stata realizzata.</li>
+<li>TipoDelRobot: il committente ha specificato di essere interessato a un sistema che controlla il VirtualRobot, ma ha anticipato che in futuro vorrà usare un robot reale. Al momento però, non siamo obbligati ad affrontare questo requisito.</li>
+</ol>
+</p>
+<h3>Requisiti non funzionali</h3>
+<p>
+<ol class="simple">
+<li>Proattività: il robot deve muoversi in modo autonomo fino a compimento del lavoro.</li>
+<li>Reattività: il committente ha prospettato la possibilità che il robot sospenda il lavoro in caso di allarmi o altre condizioni (comandi di un operatore, temperatura ambiente elevata, etc.). Al momento però, non siamo obbligati ad affrontare requisiti di questo tipo.</li>
+<li>Sicurezza: non vi sono requisiti specifici, se non l’assunzione che vi sia un unico programma di controllo.</li>
+</ol>
+</p>
 <h2>Problem analysis</h2>
 <p>
 Una possibile criticità si rivela nel trovare un modo oggettivo per capire se il robot sia passato sui punti della stanza. <br/>
@@ -227,11 +247,49 @@ Il robot può avere vari modi per tenere traccia di dove è già passato:
 <ul class="simple">
 <li>si costruisce una mappa interna della stanza</li>
 <li>delega a qualche altra entità la conoscenza sui punti da lui attraversati e comunica con essa. Questa entità esterna indicherà al robot le mosse da fare</li>
+<li>Segue una strategia di movimento che garantisca la copertura della stanza<li>
 </ul>
 </p>
- 
+<p/>
 
-<h2>Test plans</h2> 
+<h3>Il passo del robot</h3>
+<p>
+Per attuare le strategie riportate di seguito conviene seguire un'ipotesi:<br/>
+il robot si muove per passi di lunghezza DR<br/>
+dove DR è il raggio della circonferenza in cui è possibile inscrivere il robot<br/>
+DR diventa quindi l'unità di misura per le distanze e anche la stanza viene divisa in celle quadrate di lato DR<br/>
+Emerge qui una criticità: se la stanza non ha dimensioni multiple di DR come fare?
+</p>
+
+<h3>Strategia di movimento</h3>
+La scelta più conveniente risulta quella della strategia di movimento, anche perchè permette di essere più facilmente verificabile
+<p>
+<img src="./img/strategieMovimento.png" alt="colonne" width="23%" height="23%">
+<img src="./img/OndeConcentriche.png" alt="onde" width="24%" height="24%">
+<img src="./img/spiralmove0.png" alt="spirale" width="23%" height="23%">
+</p>
+<h4>Movimento per colonne</h4>
+Nel caso della figura di sinistra, il robot lavora ‘per colonne’. In particolare, procede lungo il muro wallLeft fino a incontrare wallDown. Qui gira a sinistra, fa un passo laterale di lunghezza adeguaata, poi gira di nuovo a sinistra e procede diritto verso il muro wallUp; quando lo incontra gira a destra fa un passo laterale, rigira verso destra e di nuovo procede verso wallDown.
+<br/>
+CompletamentoLavoro: durante un passo laterale, il robot incontrerà di sicuro wallRight: come ultima mossa procede lungo tale muro fino a che non incontra di nuovo un muro (wallUp o wallDown) e qui si ferma, considerando terminato il lavoro. Il numero di passi laterali corrisponde alla larghezza della stanza, ovvero DWallDown
+<br/>
+VerificaLavoro: consiste nel tenere traccia del numero di passi laterali compiuti lungo il muro wallDown. Se ogni passo copre una distanza DR pari alla lunghezza del robot, il numero totale dei passi da compiere è DWallDown/DR + 1.
+<h4>Movimento a spirale</h4>
+Nel caso della figura di centro, il robot procede coprendo aree quadrate di lato DR*N, con N=1,2,..,M. Questa strategia risulta facile da realizzare per stanza quadrate o quasi, ma è più complicata per stanza rettangolari con lati di lunghezza diversa tra loro.
+<h4>Movimento a onde</h4>
+Nel caso della figura di destra, il robot segue i bordi della stanza, riducendo via via il lati della stanza di DR, lavrando in una ‘stanza virtuale’ di lati DWallDown - N*DR e DWallLeft - N*DR, con N=1,2,..,M.
+<br/>
+CompletamentoLavoro: quando la stanza virtuale perde una dimensione, il robot deve coprire quallo che rimane.
+<br/>
+VerificaLavoro: se la parte che rimane ha lato L > DR, può risultare complicato
+
+<p>
+La strategia più adeguata e facilmente verificabile è il movimento a colonne
+</p>
+
+
+
+<h3>Test plans</h2> 
 <p>
 
 </p>

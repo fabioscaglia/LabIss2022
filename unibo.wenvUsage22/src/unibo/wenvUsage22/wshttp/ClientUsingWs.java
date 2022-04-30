@@ -24,10 +24,12 @@ public class ClientUsingWs implements IObserver{
 		((WsConnection)conn).addObserver(this);
  
  		//conn.forward( turnLeft( 800  ) );
- 		conn.forward( ApplData.moveForward(1800) );
+ 		conn.forward( ApplData.moveForward(1500) ); 
+ 			//La info di fine mossa viene gestita da update/2
+ 		
+ 		
 //		conn.forward( stop( ) );
-    	CommUtils.delay( 4000 );
-    	System.out.println("DOPO SLEEP");
+////    	Thread.sleep( 500 );
 //		conn.forward( turnRight( 400 ) );
 
 //			conn.forward( turnRight(300) );
