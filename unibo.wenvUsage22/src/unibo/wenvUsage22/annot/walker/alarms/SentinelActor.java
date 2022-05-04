@@ -22,10 +22,10 @@ public class SentinelActor extends QakActor22FsmAnnot {
 		//CommUtils.delay( 3000 );  //NO
 		new Thread() {
 			public void run() {
-				CommUtils.delay( 1000 );
+				//CommUtils.delay( 1000 );
 				ColorsOut.outappl( "QakActor22 | emit=" + SystemData.fireEvent(  )  , ColorsOut.GREEN);
 				Qak22Util.emitEvent( SystemData.fireEvent(  ) );
-				CommUtils.delay( 4000 );
+				CommUtils.delay( 2000 );
 				ColorsOut.outappl( "QakActor22 | emit=" + SystemData.endAlarm(  )  , ColorsOut.GREEN);
 				Qak22Util.emitEvent( SystemData.endAlarm(  ) );
 			}

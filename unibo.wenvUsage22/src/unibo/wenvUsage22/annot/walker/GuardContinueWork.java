@@ -14,7 +14,7 @@ public class GuardContinueWork {
 	}
  	public boolean eval( ) {
  		boolean b = checkValue();
- 		ColorsOut.outappl("GuardContinueWork eval="+b , ColorsOut.CYAN);
+ 		ColorsOut.outappl("GuardEndOfWork eval="+b , ColorsOut.CYAN);
  		return b;
 	}
 
