@@ -287,7 +287,20 @@ VerificaLavoro: se la parte che rimane ha lato L > DR, può risultare complicato
 La strategia più adeguata e facilmente verificabile è il movimento a colonne
 </p>
 
-
+<h3>Comando return to Home</h3>
+<p>
+Home: intersezione tra wallUp e wallLeft. <br/>
+Interrompo il movimento del robot e mi ruoto nella direzione di wallUp se non mi sto già muovendo verso di esso. Procedo verso di lui e quando vado a sbattere faccio turnLeft. Procedo
+fino ad urtare wallLeft. Una volta urtato si gira di 90° per essere in posizione. 
+</p>
+<h4>Problematiche</h4>
+<p>
+<ul class="simple">
+<li>Il robot deve conoscere la direzione di movimento. Questa informazione dipende dallo stato corrente</li>
+<li>Il robot una volta ricevuto il comando, può essere interrotto dal comando di Stop?</li>
+<li>Il robot in che stati può ricevere questo comando? Solo quelli di avanzamento come nel caso di Stop, oppure anche nei momenti in cui esegue la rotazione?</li>
+</ul>
+</p>
 
 <h3>Test plans</h2> 
 <p>
